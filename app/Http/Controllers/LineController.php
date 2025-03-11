@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Line;
-use App\Models\Rack;
+use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 
@@ -14,7 +14,7 @@ class LineController extends Controller
      */
     public function index()
     {
-        $lines = Line::all();
+        $lines = Line::with('warehouse')->orderBy('name')->paginate(10);
         return view('lines.index', compact('lines'));
     }
 
@@ -23,8 +23,8 @@ class LineController extends Controller
      */
     public function create()
     {
-        $racks = Rack::all();
-        return view('lines.create', compact('racks'));
+        $warehouses = Warehouse::orderBy('name')->get();
+        return view('lines.create', compact('warehouses'));
     }
 
     /**
@@ -32,22 +32,17 @@ class LineController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'rack_id' => 'required|exists:racks,id',
+            'warehouse_id' => 'required|exists:warehouses,id',
             'type' => 'required|in:carton,loose,mixed',
-            'max_allowed_capacity' => 'required|integer',
+            'max_allowed_capacity' => 'required|numeric|min:0',
         ]);
 
-       $line = new Line();
-       $line->name = $request->name;
-       $line->rack_id = $request->rack_id;
-       $line->type = $request->type;
-       $line->max_allowed_capacity = $request->max_allowed_capacity;
-       $line->save();
+        Line::create($validated);
 
         return redirect()->route('lines.index')
-                         ->with('success', 'Line created successfully.');
+            ->with('success', 'Line created successfully.');
     }
 
     /**
@@ -63,8 +58,8 @@ class LineController extends Controller
      */
     public function edit(Line $line)
     {
-        $racks = Rack::all();
-        return view('lines.edit', compact('line', 'racks'));
+        $warehouses = Warehouse::orderBy('name')->get();
+        return view('lines.edit', compact('line', 'warehouses'));
     }
 
     /**
@@ -72,22 +67,17 @@ class LineController extends Controller
      */
     public function update(Request $request, Line $line): RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'rack_id' => 'required|exists:racks,id',
+            'warehouse_id' => 'required|exists:warehouses,id',
             'type' => 'required|in:carton,loose,mixed',
-            'max_allowed_capacity' => 'required|integer',
+            'max_allowed_capacity' => 'required|numeric|min:0',
         ]);
 
-     $line = Line::findOrFail($line->id);
-     $line->name = $request->name;
-     $line->rack_id = $request->rack_id;
-     $line->type = $request->type;
-     $line->max_allowed_capacity = $request->max_allowed_capacity;
-     $line->save();
+        $line->update($validated);
 
         return redirect()->route('lines.index')
-                         ->with('success', 'Line updated successfully.');
+            ->with('success', 'Line updated successfully.');
     }
 
     /**
@@ -95,9 +85,15 @@ class LineController extends Controller
      */
     public function destroy(Line $line): RedirectResponse
     {
+        // Check if line has any racks
+        if ($line->racks()->exists()) {
+            return redirect()->route('lines.index')
+                ->with('error', 'Cannot delete line that has racks.');
+        }
+
         $line->delete();
 
         return redirect()->route('lines.index')
-                         ->with('success', 'Line deleted successfully.');
+            ->with('success', 'Line deleted successfully.');
     }
 }

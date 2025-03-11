@@ -4,20 +4,28 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Warehouse;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Line;
+use App\Models\Pallet;
 
 class Rack extends Model
 {
     use HasFactory;
 
-    public function warehouse()
+    protected $fillable = [
+        'serial_number',
+        'capacity',
+        'line_id'
+    ];
+
+    public function line(): BelongsTo
     {
-        return $this->belongsTo(Warehouse::class);
+        return $this->belongsTo(Line::class);
     }
 
-    public function lines()
+    public function pallets(): HasMany
     {
-        return $this->hasMany(Line::class);
+        return $this->hasMany(Pallet::class);
     }
 }

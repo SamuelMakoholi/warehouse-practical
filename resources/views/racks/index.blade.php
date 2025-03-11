@@ -43,11 +43,15 @@
                             <tr>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Warehouse
+                                    Location
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Name
+                                    Serial Number
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Capacity
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -59,13 +63,22 @@
                             @foreach ($racks as $rack)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $rack->warehouse->name }}
+                                        <div class="text-sm">
+                                            <div class="font-medium text-gray-900">
+                                                {{ $rack->line->warehouse->name }}
+                                            </div>
+                                            <div class="text-gray-500">
+                                                Line: {{ $rack->line->name }}
+                                            </div>
+                                        </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $rack->name }}
+                                        {{ $rack->serial_number }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        {{ number_format($rack->capacity, 2) }} kg
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-
                                         <a href="{{ route('racks.edit', $rack) }}"
                                             class="inline-flex items-center px-3 py-1 bg-yellow-500 text-white text-sm font-medium rounded-md hover:bg-yellow-600 mr-2">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"

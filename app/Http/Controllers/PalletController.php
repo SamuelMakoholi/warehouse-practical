@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pallet;
+use App\Models\Rack;
 use App\Models\Line;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -15,7 +16,7 @@ class PalletController extends Controller
      */
     public function index()
     {
-        $pallets = Pallet::all();
+        $pallets = Pallet::with(['rack.line.warehouse'])->get();
         return view('pallets.index', compact('pallets'));
     }
 
@@ -24,8 +25,8 @@ class PalletController extends Controller
      */
     public function create()
     {
-        $lines = Line::all();
-        return view('pallets.create', compact('lines'));
+        $racks = Rack::with('line.warehouse')->get();
+        return view('pallets.create', compact('racks'));
     }
 
     /**
@@ -35,17 +36,12 @@ class PalletController extends Controller
     {
         $request->validate([
             'serial_number' => 'required|string|max:255|unique:pallets,serial_number',
-            'line_id' => 'required|exists:lines,id',
-            'capacity' => 'required|integer',
+            'rack_id' => 'required|exists:racks,id',
+            'capacity' => 'required|numeric|min:0',
             'quality_mark' => 'nullable|string|max:255',
         ]);
 
-        $pallet = new Pallet();
-        $pallet->serial_number = $request->serial_number;
-        $pallet->line_id = $request->line_id;
-        $pallet->capacity = $request->capacity;
-        $pallet->quality_mark = $request->quality_mark;
-        $pallet->save();
+        Pallet::create($request->all());
 
         return redirect()->route('pallets.index')
                          ->with('success', 'Pallet created successfully.');
@@ -56,6 +52,7 @@ class PalletController extends Controller
      */
     public function show(Pallet $pallet)
     {
+        $pallet->load(['rack.line.warehouse', 'packages']);
         return view('pallets.show', compact('pallet'));
     }
 
@@ -64,8 +61,9 @@ class PalletController extends Controller
      */
     public function edit(Pallet $pallet)
     {
+        $racks = Rack::with('line.warehouse')->get();
         $lines = Line::all();
-        return view('pallets.edit', compact('pallet', 'lines'));
+        return view('pallets.edit', compact('pallet', 'racks', 'lines'));
     }
 
     /**
@@ -80,16 +78,12 @@ class PalletController extends Controller
                 'max:255',
                 Rule::unique('pallets')->ignore($pallet->id),
             ],
-            'line_id' => 'required|exists:lines,id',
-            'capacity' => 'required|integer',
+            'rack_id' => 'required|exists:racks,id',
+            'capacity' => 'required|numeric|min:0',
             'quality_mark' => 'nullable|string|max:255',
         ]);
 
-        $pallet->serial_number = $request->serial_number;
-        $pallet->line_id = $request->line_id;
-        $pallet->capacity = $request->capacity;
-        $pallet->quality_mark = $request->quality_mark;
-        $pallet->save();
+        $pallet->update($request->all());
 
         return redirect()->route('pallets.index')
                          ->with('success', 'Pallet updated successfully.');
@@ -100,6 +94,11 @@ class PalletController extends Controller
      */
     public function destroy(Pallet $pallet): RedirectResponse
     {
+        if ($pallet->packages()->exists()) {
+            return redirect()->route('pallets.index')
+                           ->with('error', 'Cannot delete pallet that has packages.');
+        }
+
         $pallet->delete();
 
         return redirect()->route('pallets.index')

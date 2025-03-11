@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Rack;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Line;
 
 class Warehouse extends Model
 {
@@ -12,8 +13,8 @@ class Warehouse extends Model
 
     protected $fillable = ['name', 'max_capacity'];
 
-    public function racks()
+    public function lines(): HasMany
     {
-        return $this->hasMany(Rack::class);
+        return $this->hasMany(Line::class);
     }
 }

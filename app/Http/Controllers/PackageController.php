@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Package;
+use App\Models\Pallet;
+use App\Models\QualityMark;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\Rule;
@@ -14,8 +16,7 @@ class PackageController extends Controller
      */
     public function index()
     {
-        //
-        $packages = Package::all();
+        $packages = Package::with(['pallet', 'qualityMark'])->latest()->get();
         return view('packages.index', compact('packages'));
     }
 
@@ -24,8 +25,9 @@ class PackageController extends Controller
      */
     public function create()
     {
-        //
-        return view('packages.create');
+        $pallets = Pallet::all();
+        $quality_marks = QualityMark::all();
+        return view('packages.create', compact('pallets', 'quality_marks'));
     }
 
     /**
@@ -34,17 +36,21 @@ class PackageController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'tracking_number' => 'required|string|max:255|unique:packages,tracking_number',
-            'weight' => 'required|numeric',
-            'destination' => 'required|string|max:255',
-            'pallet_id' => 'required|exists:pallets,id',
+            'serial_number' => 'required|string|max:255|unique:packages,serial_number',
+            'type' => 'required|in:loose,carton',
+            'mass' => 'required|numeric|min:0',
+            'barcode' => 'required|string|max:255',
+            'pallet_id' => 'nullable|exists:pallets,id',
+            'quality_mark_id' => 'required|exists:quality_marks,id',
         ]);
 
         $package = new Package();
-        $package->tracking_number = $request->tracking_number;
-        $package->weight = $request->weight;
-        $package->destination = $request->destination;
+        $package->serial_number = $request->serial_number;
+        $package->type = $request->type;
+        $package->mass = $request->mass;
+        $package->barcode = $request->barcode;
         $package->pallet_id = $request->pallet_id;
+        $package->quality_mark_id = $request->quality_mark_id;
         $package->save();
 
         return redirect()->route('packages.index')
@@ -73,21 +79,25 @@ class PackageController extends Controller
     public function update(Request $request, Package $package): RedirectResponse
     {
         $request->validate([
-            'tracking_number' => [
+            'serial_number' => [
                 'required',
                 'string',
                 'max:255',
                 Rule::unique('packages')->ignore($package->id),
             ],
-            'weight' => 'required|numeric',
-            'destination' => 'required|string|max:255',
-            'pallet_id' => 'required|exists:pallets,id',
+            'type' => 'required|in:loose,carton',
+            'mass' => 'required|numeric|min:0',
+            'barcode' => 'required|string|max:255',
+            'pallet_id' => 'nullable|exists:pallets,id',
+            'quality_mark_id' => 'required|exists:quality_marks,id',
         ]);
 
-        $package->tracking_number = $request->tracking_number;
-        $package->weight = $request->weight;
-        $package->destination = $request->destination;
+        $package->serial_number = $request->serial_number;
+        $package->type = $request->type;
+        $package->mass = $request->mass;
+        $package->barcode = $request->barcode;
         $package->pallet_id = $request->pallet_id;
+        $package->quality_mark_id = $request->quality_mark_id;
         $package->save();
 
         return redirect()->route('packages.index')

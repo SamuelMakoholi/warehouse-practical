@@ -26,37 +26,55 @@
                         <div class="mb-6">
                             <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                             <input type="text" name="name" id="name"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm @error('name') border-red-500 @enderror"
+                                value="{{ old('name') }}"
                                 required>
+                            @error('name')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="mb-6">
-                            <label for="rack_id" class="block text-sm font-medium text-gray-700">Rack</label>
-                            <select name="rack_id" id="rack_id"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                            <label for="warehouse_id" class="block text-sm font-medium text-gray-700">Warehouse</label>
+                            <select name="warehouse_id" id="warehouse_id"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm @error('warehouse_id') border-red-500 @enderror"
                                 required>
-                                @foreach ($racks as $rack)
-                                    <option value="{{ $rack->id }}">{{ $rack->name }}</option>
+                                <option value="">Select a Warehouse</option>
+                                @foreach ($warehouses as $warehouse)
+                                    <option value="{{ $warehouse->id }}" {{ old('warehouse_id') == $warehouse->id ? 'selected' : '' }}>
+                                        {{ $warehouse->name }} ({{ number_format($warehouse->max_capacity, 2) }} kg)
+                                    </option>
                                 @endforeach
                             </select>
+                            @error('warehouse_id')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="mb-6">
                             <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
                             <select name="type" id="type"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm @error('type') border-red-500 @enderror"
                                 required>
-                                <option value="carton">Carton</option>
-                                <option value="loose">Loose</option>
-                                <option value="mixed">Mixed</option>
+                                <option value="">Select a Type</option>
+                                <option value="carton" {{ old('type') == 'carton' ? 'selected' : '' }}>Carton</option>
+                                <option value="loose" {{ old('type') == 'loose' ? 'selected' : '' }}>Loose</option>
+                                <option value="mixed" {{ old('type') == 'mixed' ? 'selected' : '' }}>Mixed</option>
                             </select>
+                            @error('type')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="mb-6">
-                            <label for="max_allowed_capacity" class="block text-sm font-medium text-gray-700">Max Allowed Capacity</label>
-                            <input type="number" name="max_allowed_capacity" id="max_allowed_capacity"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                            <label for="max_allowed_capacity" class="block text-sm font-medium text-gray-700">Max Allowed Capacity (kg)</label>
+                            <input type="number" name="max_allowed_capacity" id="max_allowed_capacity" step="0.01" min="0"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm @error('max_allowed_capacity') border-red-500 @enderror"
+                                value="{{ old('max_allowed_capacity') }}"
                                 required>
+                            @error('max_allowed_capacity')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="flex items-center justify-end">

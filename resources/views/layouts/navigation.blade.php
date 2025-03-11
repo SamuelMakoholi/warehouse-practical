@@ -30,7 +30,7 @@
                     <x-nav-link :href="route('packages.index')" :active="request()->routeIs('packages.*')">
                         {{ __('Packages') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('quality_marks.index')" :active="request()->routeIs('quality_marks.*')">
+                    <x-nav-link :href="route('quality-marks.index')" :active="request()->routeIs('quality_marks.*')">
                         {{ __('Quality Marks') }}
                     </x-nav-link>
                 </div>
@@ -103,7 +103,7 @@
             <x-responsive-nav-link :href="route('packages.index')" :active="request()->routeIs('packages.*')">
                 {{ __('Packages') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('quality_marks.index')" :active="request()->routeIs('quality_marks.*')">
+            <x-responsive-nav-link :href="route('quality-marks.index')" :active="request()->routeIs('quality_marks.*')">
                 {{ __('Quality Marks') }}
             </x-responsive-nav-link>
         </div>

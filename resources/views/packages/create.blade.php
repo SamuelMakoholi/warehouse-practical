@@ -24,22 +24,32 @@
                         @csrf
 
                         <div class="mb-6">
-                            <label for="tracking_number" class="block text-sm font-medium text-gray-700">Tracking Number</label>
-                            <input type="text" name="tracking_number" id="tracking_number"
+                            <label for="serial_number" class="block text-sm font-medium text-gray-700">Serial Number</label>
+                            <input type="text" name="serial_number" id="serial_number"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                                 required>
                         </div>
 
                         <div class="mb-6">
-                            <label for="weight" class="block text-sm font-medium text-gray-700">Weight</label>
-                            <input type="number" name="weight" id="weight"
+                            <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
+                            <select name="type" id="type"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                required>
+                                <option value="loose">Loose</option>
+                                <option value="carton" selected>Carton</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="mass" class="block text-sm font-medium text-gray-700">Mass (kg)</label>
+                            <input type="number" step="0.01" name="mass" id="mass"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                                 required>
                         </div>
 
                         <div class="mb-6">
-                            <label for="destination" class="block text-sm font-medium text-gray-700">Destination</label>
-                            <input type="text" name="destination" id="destination"
+                            <label for="barcode" class="block text-sm font-medium text-gray-700">Barcode</label>
+                            <input type="text" name="barcode" id="barcode"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                                 required>
                         </div>
@@ -47,10 +57,21 @@
                         <div class="mb-6">
                             <label for="pallet_id" class="block text-sm font-medium text-gray-700">Pallet</label>
                             <select name="pallet_id" id="pallet_id"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                                required>
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                                <option value="">Select Pallet (Optional)</option>
                                 @foreach ($pallets as $pallet)
                                     <option value="{{ $pallet->id }}">{{ $pallet->serial_number }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="quality_mark_id" class="block text-sm font-medium text-gray-700">Quality Mark</label>
+                            <select name="quality_mark_id" id="quality_mark_id"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                required>
+                                @foreach ($quality_marks as $mark)
+                                    <option value="{{ $mark->id }}">{{ $mark->name }}</option>
                                 @endforeach
                             </select>
                         </div>

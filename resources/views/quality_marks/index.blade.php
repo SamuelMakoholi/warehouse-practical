@@ -25,7 +25,7 @@
             @endif
 
             <div class="flex justify-end mb-4">
-                <a href="{{ route('quality_marks.create') }}"
+                <a href="{{ route('quality-marks.create') }}"
                     class="inline-flex items-center px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-600">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
@@ -64,7 +64,7 @@
                                         {{ $qualityMark->description }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <a href="{{ route('quality_marks.edit', $qualityMark) }}"
+                                        <a href="{{ route('quality-marks.edit', $qualityMark) }}"
                                             class="inline-flex items-center px-3 py-1 bg-yellow-500 text-white text-sm font-medium rounded-md hover:bg-yellow-600 mr-2">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -75,7 +75,7 @@
                                             Edit
                                         </a>
 
-                                        <form action="{{ route('quality_marks.destroy', $qualityMark) }}" method="POST"
+                                        <form action="{{ route('quality-marks.destroy', $qualityMark) }}" method="POST"
                                             class="inline">
                                             @csrf
                                             @method('DELETE')
