@@ -18,5 +18,5 @@ Before you begin, ensure you have met the following requirements:
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/company-x.git
+   git clone https://github.com/SamuelMakoholi/warehouse-practical.git
    cd company-x
