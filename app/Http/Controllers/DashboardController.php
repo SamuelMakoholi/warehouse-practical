@@ -93,7 +93,7 @@ class DashboardController extends Controller
                 ];
             });
 
-        // Get packages ordered by creation date (configurable)
+        // Get packages ordered by creation date
         $sortOrder = $request->input('sort_order', 'desc');
         $packages = Package::with(['pallet.rack.line.warehouse', 'qualityMark'])
             ->where('is_discarded', false)

@@ -1,6 +1,6 @@
 <x-guest-layout>
-    <div class="min-h-screen flex items-center justify-center bg-gray-100">
-        <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
+    <div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-gray-100 to-blue-100">
+        <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-xl">
             <div>
                 <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
                     Warehouse Management
@@ -71,6 +71,15 @@
                         {{ __('Sign in') }}
                     </button>
                 </div>
+
+                @if (Route::has('register'))
+                    <div class="text-center mt-4">
+                        <a href="{{ route('register') }}"
+                            class="font-medium text-blue-600 hover:text-blue-500">
+                            {{ __('Don\'t have an account? Register') }}
+                        </a>
+                    </div>
+                @endif
             </form>
         </div>
     </div>
