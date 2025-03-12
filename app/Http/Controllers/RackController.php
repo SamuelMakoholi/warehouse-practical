@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Line;
 use App\Models\Rack;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
@@ -24,7 +25,8 @@ class RackController extends Controller
     public function create()
     {
         $warehouses = Warehouse::all();
-        return view('racks.create', compact('warehouses'));
+        $lines = Line::all();
+        return view('racks.create', compact('warehouses', 'lines'));
     }
 
     /**
@@ -32,14 +34,17 @@ class RackController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+       // dd($request->all());
         $request->validate([
-            'name' => 'required|string|max:255',
-            'warehouse_id' => 'required|exists:warehouses,id',
+            'serial_number' => 'required|string|max:255',
+            'capacity' => 'required',
+            'line_id' => 'required|exists:lines,id',
         ]);
 
         $rack = new Rack();
-        $rack->warehouse_id = $request->warehouse_id;
-        $rack->name = $request->name;
+        $rack->serial_number = $request->serial_number;
+        $rack->line_id = $request->line_id;
+        $rack->capacity = $request->capacity;
         $rack->save();
 
         return redirect()->route('racks.index')

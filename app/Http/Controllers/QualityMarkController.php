@@ -43,7 +43,7 @@ class QualityMarkController extends Controller
         $qualityMark->description = $request->description;
         $qualityMark->save();
 
-        return redirect()->route('quality_marks.index')
+        return redirect()->route('quality-marks.index')
                          ->with('success', 'Quality Mark created successfully.');
     }
 
@@ -82,7 +82,7 @@ class QualityMarkController extends Controller
         $qualityMark->description = $request->description;
         $qualityMark->save();
 
-        return redirect()->route('quality_marks.index')
+        return redirect()->route('quality-marks.index')
                          ->with('success', 'Quality Mark updated successfully.');
     }
 
@@ -93,7 +93,7 @@ class QualityMarkController extends Controller
     {
         $qualityMark->delete();
 
-        return redirect()->route('quality_marks.index')
+        return redirect()->route('quality-marks.index')
                          ->with('success', 'Quality Mark deleted successfully.');
     }
 }

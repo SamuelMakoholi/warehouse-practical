@@ -16,8 +16,8 @@ class Pallet extends Model
     protected $fillable = [
         'serial_number',
         'rack_id',
-        'capacity',
-        'quality_mark'
+        'max_weight',
+        
     ];
 
     public function rack(): BelongsTo

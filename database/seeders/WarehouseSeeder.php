@@ -93,7 +93,7 @@ class WarehouseSeeder extends Seeder
                         ]);
 
                         // Create some packages for each pallet
-                        for ($k = 1; $k <= 3; $k++) {
+                        for ($k = 1; $k <= 2; $k++) {
                             Package::create([
                                 'serial_number' => "PKG-{$pallet->serial_number}-{$k}",
                                 'type' => $lineData['type'] === 'mixed' ? ($k % 2 === 0 ? 'carton' : 'loose') : ($lineData['type'] === 'loose' ? 'loose' : 'carton'),
@@ -101,7 +101,7 @@ class WarehouseSeeder extends Seeder
                                 'barcode' => "BC" . str_pad(rand(1000, 9999), 8, '0', STR_PAD_LEFT),
                                 'pallet_id' => $pallet->id,
                                 'quality_mark_id' => rand(1, 3),
-                                'is_discarded' => rand(1, 10) === 1 // 10% chance of being discarded
+                                'is_discarded' => rand(1, 10) === 1
                             ]);
                         }
                     }

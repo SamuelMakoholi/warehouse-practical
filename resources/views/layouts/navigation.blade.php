@@ -18,21 +18,23 @@
                     <x-nav-link :href="route('warehouses.index')" :active="request()->routeIs('warehouses.*')">
                         {{ __('Warehouses') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('racks.index')" :active="request()->routeIs('racks.*')">
-                        {{ __('Racks') }}
+                    <x-nav-link :href="route('quality-marks.index')" :active="request()->routeIs('quality_marks.*')">
+                        {{ __('Quality Marks') }}
                     </x-nav-link>
                     <x-nav-link :href="route('lines.index')" :active="request()->routeIs('lines.*')">
                         {{ __('Lines') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('racks.index')" :active="request()->routeIs('racks.*')">
+                        {{ __('Racks') }}
+                    </x-nav-link>
+                   
                     <x-nav-link :href="route('pallets.index')" :active="request()->routeIs('pallets.*')">
                         {{ __('Pallets') }}
                     </x-nav-link>
                     <x-nav-link :href="route('packages.index')" :active="request()->routeIs('packages.*')">
                         {{ __('Packages') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('quality-marks.index')" :active="request()->routeIs('quality_marks.*')">
-                        {{ __('Quality Marks') }}
-                    </x-nav-link>
+                    
                 </div>
             </div>
 

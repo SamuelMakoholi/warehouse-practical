@@ -17,6 +17,16 @@
     </x-slot>
 
     <div class="py-12">
+        @if ($errors->any())
+            <div class="mb-6 p-4 bg-red-50 border border-red-400 text-red-700 rounded-md">
+                <h3 class="font-semibold">Oops! Something went wrong.</h3>
+                <ul class="mt-2 list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
@@ -24,7 +34,8 @@
                         @csrf
 
                         <div class="mb-6">
-                            <label for="serial_number" class="block text-sm font-medium text-gray-700">Serial Number</label>
+                            <label for="serial_number" class="block text-sm font-medium text-gray-700">Serial
+                                Number</label>
                             <input type="text" name="serial_number" id="serial_number"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                                 required>
@@ -41,15 +52,29 @@
                             </select>
                         </div>
 
+
                         <div class="mb-6">
-                            <label for="capacity" class="block text-sm font-medium text-gray-700">Capacity</label>
-                            <input type="number" name="capacity" id="capacity"
+                            <label for="max_weight" class="block text-sm font-medium text-gray-700">Max Weight</label>
+                            <input type="number" name="max_weight" id="max_weight"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                                 required>
                         </div>
 
+                        
                         <div class="mb-6">
-                            <label for="quality_mark" class="block text-sm font-medium text-gray-700">Quality Mark</label>
+                            <label for="rack_id" class="block text-sm font-medium text-gray-700">Rack</label>
+                            <select name="rack_id" id="rack_id"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                required>
+                                @foreach ($racks as $rack)
+                                    <option value="{{ $rack->id }}">{{ $rack->serial_number }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="quality_mark" class="block text-sm font-medium text-gray-700">Quality
+                                Mark</label>
                             <input type="text" name="quality_mark" id="quality_mark"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                         </div>

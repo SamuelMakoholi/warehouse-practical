@@ -26,7 +26,8 @@ class PalletController extends Controller
     public function create()
     {
         $racks = Rack::with('line.warehouse')->get();
-        return view('pallets.create', compact('racks'));
+        $lines = Line::all();
+        return view('pallets.create', compact('racks', 'lines'));
     }
 
     /**
@@ -34,11 +35,11 @@ class PalletController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        //dd($request->all());    
         $request->validate([
             'serial_number' => 'required|string|max:255|unique:pallets,serial_number',
             'rack_id' => 'required|exists:racks,id',
-            'capacity' => 'required|numeric|min:0',
-            'quality_mark' => 'nullable|string|max:255',
+            'max_weight' => 'required|numeric|min:0',
         ]);
 
         Pallet::create($request->all());
