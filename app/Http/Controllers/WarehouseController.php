@@ -65,6 +65,7 @@ class WarehouseController extends Controller
      */
     public function update(Request $request, Warehouse $warehouse): RedirectResponse
     {
+       // dd($request->all());    
         $request->validate([
             'name' => 'required|string|max:255',
             'max_capacity' => 'required|integer',

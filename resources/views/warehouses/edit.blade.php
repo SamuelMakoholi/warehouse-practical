@@ -17,6 +17,16 @@
     </x-slot>
 
     <div class="py-12">
+        @if ($errors->any())
+        <div class="mb-6 p-4 bg-red-50 border border-red-400 text-red-700 rounded-md">
+            <h3 class="font-semibold">Oops! Something went wrong.</h3>
+            <ul class="mt-2 list-disc list-inside">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">

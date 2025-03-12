@@ -46,7 +46,7 @@ class DashboardController extends Controller
             }
         }
 
-        // Get warehouse snapshots with proper eager loading
+        // Get warehouse snapshots
         $warehouses = Warehouse::with([
                 'lines.racks.pallets.packages' => function($query) {
                     $query->where('is_discarded', false);

@@ -65,7 +65,8 @@ class RackController extends Controller
     public function edit(Rack $rack)
     {
         $warehouses = Warehouse::all();
-        return view('racks.edit', compact('rack', 'warehouses'));
+        $lines = Line::all();
+        return view('racks.edit', compact('rack', 'warehouses','lines'));
     }
 
     /**
@@ -74,13 +75,15 @@ class RackController extends Controller
     public function update(Request $request, Rack $rack): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'warehouse_id' => 'required|exists:warehouses,id',
+            'serial_number' => 'required|string|max:255',
+            'capacity' => 'required',
+            'line_id' => 'required|exists:lines,id',
         ]);
 
         $rack = Rack::findOrFail($rack->id);
-        $rack->warehouse_id = $request->warehouse_id;
-        $rack->name = $request->name;
+        $rack->serial_number = $request->serial_number;
+        $rack->line_id = $request->line_id;
+        $rack->capacity = $request->capacity;
         $rack->save();
         return redirect()->route('racks.index')
                          ->with('success', 'Rack updated successfully.');
